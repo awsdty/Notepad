@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Notepad.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="500"
+        Width="380" Height="500"
+        x:Class="Notepad.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        xmlns:locc="clr-namespace:Notepad.Models"
+        Title="Notepad">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+  <Window.Resources>
+    <vm:ImageConverter x:Key="imageConvert"/>
+  </Window.Resources>
+  
+  <Panel>
+  <StackPanel Name="start_page" IsVisible="{Binding Visual}">
+          <TextBox Text="{Binding Text_box, Mode=TwoWay}" Name="contentTextBox" Watermark="Введите текст..." AcceptsReturn="True" TextWrapping="Wrap" Height="420" Width="380"/>
+          <Button Name="openButton" Command="{Binding Open}" Height="40" Width="380" FontSize="20" HorizontalContentAlignment="Center" Content="Открыть"></Button>
+          <Button Name="saveButton" Command="{Binding Save}" Height="40" Width="380" FontSize="20" HorizontalContentAlignment="Center" Content="Сохранить"></Button>
+    </StackPanel>
+
+    <StackPanel Name="Dir" IsVisible="{Binding Visual1}">
+      <ListBox Name="fileListBox" Items="{Binding DirectoriesProp}" SelectedIndex="{Binding Cur_Index}" DoubleTapped="DoubleTap" Height="420" Width="380">
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="{x:Type locc:Dir}">
+            <Grid>
+              <Grid ColumnDefinitions="auto, auto">
+                <Image Grid.Column="0" Height="50" Width="50" Source="{Binding Image, Converter={StaticResource imageConvert}}"/>
+                <TextBlock Grid.Column="1"  Padding="12" Height="40" Width="330"  HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Name}"/>
+              </Grid>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+      <TextBox Name="fileTextBox" Text="{Binding Text_Folder, Mode=TwoWay}" Height="40" Width="380" AcceptsReturn="True" TextWrapping="Wrap"/>
+      <WrapPanel Grid.Row="2">
+        <Button Name="okButton" Command="{Binding ButtonClick}" IsVisible="{Binding Visual1}" Height="40" Width="190" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="{Binding Button_Save, Mode=OneWay}"></Button>
+        <Button Name="cancelButton" Height="40" Width="190" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding Back} " Content="Отмена"></Button>
+      </WrapPanel>
+    </StackPanel>
+  </Panel>
+
+ 
+</Window>
